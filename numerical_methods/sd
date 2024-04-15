@@ -1,0 +1,12 @@
+
+def main():
+    x0 = 0
+    y0 = 1
+    x_start = 0
+    x_end = 1.5
+    x = np.linspace(x_start, x_end, 100)
+    h = 0.1
+    print('The value of y at x is:', rungeKutta(x0, y0, x, h))
+
+if __name__ == '__main__':
+    main()
