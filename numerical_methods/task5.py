@@ -1,6 +1,8 @@
 #https://pro-prof.com/forums/topic/sweep-method-for-solving-systems-of-linear-algebraic-equations
 
 import numpy as np
+from matplotlib import pyplot as plt
+
 
 def get_diagonales(A): #Разделим матрицу A на верхнюю (с), главную (b) и нижнюю диагональ (a)
     a = np.zeros((len(A[0])))
@@ -43,6 +45,17 @@ def thomas_algorithm(A, B): #метод прогонки
 
     return x
 
+def draw_roots(roots):
+    plt.axhline(0, color='black', linewidth=0.5)
+    plt.axvline(0, color='black', linewidth=0.5)
+    for root in roots:
+        plt.scatter(root, 0, color='red')
+    plt.xlabel('x')
+    plt.title('Решение системы')
+    legend_entry1 = plt.Line2D([0], [0], marker='o', color='red', label='Корни системы')
+    plt.legend(handles=[legend_entry1])
+    plt.grid(True)
+    plt.show()
 
 def main():
     A = np.array([
@@ -56,6 +69,7 @@ def main():
     B = np.array([-81, 71, -39, 64, 3])
     x = thomas_algorithm(A, B)
     print(x)
+    draw_roots(x)
 
 if __name__ == '__main__':
     main()

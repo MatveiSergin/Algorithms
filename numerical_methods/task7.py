@@ -1,5 +1,9 @@
 import math
 
+import numpy as np
+from matplotlib import pyplot as plt
+
+
 #https://www.articleshub.net/2023/05/metod-pryamougolnikov-python.html
 def rectangle_method(f, a, b, eps):
     n = int(1 / eps)
@@ -53,6 +57,17 @@ def trapezoid_method(f, a, b, eps):
 def f(x):
     return (math.tan(x) ** 2) / (x ** 2 + 1)
 
+def draw():
+    x_values = np.linspace(0.2, 1, 1000)
+    y_values = [f(x) for x in x_values]
+    plt.plot(x_values, y_values, color='red', label='f(x)')
+    plt.xlabel('x')
+    plt.ylabel('f(x)')
+    plt.title('Вычисление интеграла')
+    plt.fill_between(x_values, y_values, color='blue', alpha=0.5)
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 def main():
     a = 0.2
     b = 1
@@ -63,7 +78,7 @@ def main():
     print(f"Метод треугольника: {res1}")
     print(f"Метод трацпеции: {res2}")
     print(f"Метод Симпсона: {res3}")
-
+    draw()
 
 if __name__ == '__main__':
     main()

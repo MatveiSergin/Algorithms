@@ -1,5 +1,16 @@
 import numpy as np
-#http://elibrary.sgu.ru/uch_lit/1719.pdf
+import math
+
+from matplotlib import pyplot as plt
+
+
+#https://birskin.ru/attachments/article/523/Морозова_статья_исправ.pdf
+
+def func(x): #представление системы в виде y = Ax**n + B * x **n-1 ... + C
+    return [
+        (math.sqrt((1 - x**2 / 4) * 9)),
+        math.cbrt(x)
+    ]
 def func_Newton(x, y):
     return np.array([
         x**2/4 + y**2/9 - 1,
@@ -18,7 +29,7 @@ def J(x, y):
         [-1/3*x**(-2/3), 1]
     ])
 
-
+#http://elibrary.sgu.ru/uch_lit/1719.pdf
 def newton_method(F, J, init_value, esp):
     x_prev = np.array(init_value)
     iterations = 0
@@ -37,20 +48,37 @@ def newton_method(F, J, init_value, esp):
 
 
 def simple_iteration_method(init_value, esp):
-    x_prev = np.array(init_value)
+    x0 = np.array(init_value)
     iterations = 0
-    x_next = func_simple_iteration(*x_prev)
+    x1 = func_simple_iteration(*x0)
 
-    while np.linalg.norm(x_next - x_prev) >= esp:
-        x_prev = x_next
-        x_next = func_simple_iteration(*x_prev)
+    while np.linalg.norm(x1 - x0) >= esp:
+        x0 = x1
+        x1 = func_simple_iteration(*x0)
         iterations += 1
 
-    return x_next, iterations
+    return x1, iterations
 
+def draw(x, y):
+    x_values = np.linspace(-2, 2, 1000)
+    y_values = [func(x) for x in x_values]
+    graph1 = [y[0] for y in y_values]
+    graph2 = [y[1] for y in y_values]
+
+    plt.plot(x_values, graph1, label='f(x)')
+    plt.plot(x_values, graph2, label='g(x)')
+
+    plt.scatter(x, y, color='green', label='решение системы')
+
+    plt.xlabel('x')
+    plt.ylabel('y')
+    plt.title('Решение системы уравнений')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
 def main():
-    init_value  = [1, 1]
+    init_value = [1, 1]
     esp = 0.0001
     true_answer = np.array([1.826449209846151, 1.22236957941035])
 
@@ -78,5 +106,7 @@ def main():
         print("Метод Ньютона точнее")
     else:
         print("Метод простых итераций точнее")
+
+    draw(*result_newton)
 if __name__ == "__main__":
     main()
